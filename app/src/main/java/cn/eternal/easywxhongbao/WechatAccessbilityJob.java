@@ -44,6 +44,7 @@ public class WechatAccessbilityJob extends BaseAccessbilityJob {
 
     private PackageInfo mWechatPackageInfo = null;
     private Handler mHandler = null;
+    private boolean isReceivingHongbao;
 
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -85,18 +86,23 @@ public class WechatAccessbilityJob extends BaseAccessbilityJob {
         }
 
         List<AccessibilityNodeInfo> list = nodeInfo.findAccessibilityNodeInfosByText("领取红包");
-        if (list != null && list.isEmpty()) {
+
+        if(list != null && list.isEmpty()) {
+            // 从消息列表查找红包
             AccessibilityNodeInfo node = AccessibilityHelper.findNodeInfosByText(nodeInfo, "微信红包");
-            if (node != null) {
-                if (BuildConfig.DEBUG) {
+            if(node != null) {
+                if(BuildConfig.DEBUG) {
                     Log.i(TAG, "-->微信红包:" + node);
                 }
+                isReceivingHongbao = true;
                 AccessibilityHelper.performClick(nodeInfo);
             }
-        } else if (list != null) {
-            Log.i(TAG, "-->last 红包:" + list.size());
-            AccessibilityNodeInfo node = list.get(list.size() - 1);
-            AccessibilityHelper.performClick(node);
+
+        } else if(list != null) {
+                //最新的红包领起
+                AccessibilityNodeInfo node = list.get(list.size() - 1);
+                AccessibilityHelper.performClick(node);
+                isReceivingHongbao = false;
         }
     }
 

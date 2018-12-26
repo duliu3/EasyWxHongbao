@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         saomiao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "正在前往开启扫描服务", Toast.LENGTH_LONG).show();
                 openAccessibilityServiceSettings();
             }
         });
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         try {
             Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
             startActivity(intent);
-            Toast.makeText(this, "开启服务", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
